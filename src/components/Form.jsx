@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-export default function Form({ amount, clickHandler, message }) {
+export default function Form({ amount, clickHandler, changeHandler }) {
   return (
     <div className="flex flex-col items-center gap-y-1">
       <label htmlFor="amount" className="font-bold text-cyan-800">
@@ -11,6 +11,7 @@ export default function Form({ amount, clickHandler, message }) {
         type="number"
         className="rounded border border-cyan-900"
         value={amount}
+        onChange={changeHandler}
       />
       <button
         type="button"
@@ -19,7 +20,6 @@ export default function Form({ amount, clickHandler, message }) {
       >
         Submit
       </button>
-      <p>{message}</p>
     </div>
   );
 }
@@ -27,5 +27,5 @@ export default function Form({ amount, clickHandler, message }) {
 Form.propTypes = {
   amount: PropTypes.number.isRequired,
   clickHandler: PropTypes.func.isRequired,
-  message: PropTypes.string.isRequired,
+  changeHandler: PropTypes.func.isRequired,
 };

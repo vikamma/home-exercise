@@ -1,11 +1,13 @@
-import React from "react";
+import { useState } from "react";
 import "./App.css";
 import Form from "./components/Form";
 
 function App() {
-  const [balance, setBalance] = React.useState(100);
-  const [amount, setAmount] = React.useState("");
-  const [message, setMessage] = React.useState("");
+  const [balance, setBalance] = useState(100);
+  const [amount, setAmount] = useState(0);
+  const [message, setMessage] = useState("");
+
+  const handleChange = (event) => setAmount(event.target.value);
 
   const handleClick = () => {
     if (amount <= balance) {
@@ -18,7 +20,7 @@ function App() {
         setMessage(`You couldn't transfer negative amount`);
       }
     } else {
-      setMessage(`You balance isn't enough to transfer`);
+      setMessage(`You balance $${balance} isn't enough to transfer`);
     }
   };
 
@@ -28,13 +30,14 @@ function App() {
         Enter Amount:
       </h1>
 
-      <form className="mx-auto flex w-1/3 justify-between gap-x-12">
-        <Form
-          amount={Number(amount)}
-          clickHandler={handleClick}
-          message={message}
-        />
-      </form>
+      {/* <form className="mx-auto flex w-1/3 justify-between gap-x-12"> */}
+      <Form
+        amount={amount}
+        clickHandler={handleClick}
+        changeHandler={handleChange}
+      />
+      {/* </form> */}
+      <p>{message}</p>
     </>
   );
 }
