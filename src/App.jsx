@@ -3,24 +3,34 @@ import "./App.css";
 import Form from "./components/Form";
 
 function App() {
-  const [balance, setBalance] = useState(100);
-  const [amount, setAmount] = useState(0);
-  const [message, setMessage] = useState("");
+  const [transferStatus, setTransferStatus] = useState({
+    amt: 0,
+    balance: 100,
+    message: "",
+  });
 
-  const handleChange = (event) => setAmount(event.target.value);
-
-  const handleClick = () => {
-    if (amount <= balance) {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const amount = event.target.elements[0].value;
+    if (amount <= transferStatus.balance) {
       if (amount > 0) {
-        setBalance(balance - amount);
-        setMessage(
-          `Now your balance is $${balance}.You transferred $${amount}`
-        );
+        transferStatus.balance -= amount;
+        setTransferStatus((prevTransferStatus) => ({
+          ...prevTransferStatus,
+          amt: amount,
+          message: `You transfer ${amount}`,
+        }));
       } else {
-        setMessage(`You couldn't transfer negative amount`);
+        setTransferStatus((prevTransferStatus) => ({
+          ...prevTransferStatus,
+          message: `You can't transfer negative`,
+        }));
       }
     } else {
-      setMessage(`You balance $${balance} isn't enough to transfer`);
+      setTransferStatus((prevTransferStatus) => ({
+        ...prevTransferStatus,
+        message: `Your balance isn't enought`,
+      }));
     }
   };
 
@@ -31,13 +41,9 @@ function App() {
       </h1>
 
       {/* <form className="mx-auto flex w-1/3 justify-between gap-x-12"> */}
-      <Form
-        amount={amount}
-        clickHandler={handleClick}
-        changeHandler={handleChange}
-      />
-      {/* </form> */}
-      <p>{message}</p>
+      <Form submitHandler={handleSubmit} />
+      <p>{transferStatus.message}</p>
+      <p>{`Your balance is ${transferStatus.balance}`}</p>
     </>
   );
 }
